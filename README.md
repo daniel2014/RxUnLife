@@ -1,4 +1,4 @@
-# RxLifecycle
+# RxUnLife
 
 The utilities provided here allow for automatic completion of sequences based on `Activity` or `Fragment`
 lifecycle events. This capability is useful in Android, where incomplete subscriptions can cause memory leaks.
@@ -109,27 +109,14 @@ the `Subscription` yourself and call `unsubscribe()` when appropriate.
 
 ## Installation
 
-```gradle
-compile 'com.trello:rxlifecycle:1.0'
-
-// If you want to bind to Android-specific lifecycles
-compile 'com.trello:rxlifecycle-android:1.0'
-
-// If you want pre-written Activities and Fragments you can subclass as providers
-compile 'com.trello:rxlifecycle-components:1.0'
-
-// If you want to use Navi for providers
-compile 'com.trello:rxlifecycle-navi:1.0'
-
-// If you want to use Kotlin syntax
-compile 'com.trello:rxlifecycle-kotlin:1.0'
-```
 
 ## Related Libraries
 
 - [Android-Lint-Checks](https://github.com/vokal/Android-Lint-Checks) - Contains an RxLifecycle Lint check.
 
 ## License
+
+    Copyright (C) 2016 Sato Shun
 
     Copyright (C) 2016 Trello
 
