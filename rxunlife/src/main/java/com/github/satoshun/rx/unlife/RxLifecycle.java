@@ -36,7 +36,7 @@ public class RxLifecycle {
    * {@code source.compose(RxLifecycle.bindUntilEvent(lifecycle, ActivityEvent.STOP)).subscribe()}
    *
    * @param lifecycle the lifecycle sequence
-   * @param event the event which should conclude notifications from the source
+   * @param event     the event which should conclude notifications from the source
    * @return a reusable {@link Observable.Transformer} that unsubscribes the source at the specified event
    */
   @Nonnull
@@ -47,7 +47,7 @@ public class RxLifecycle {
     Preconditions.checkNotNull(lifecycle, "lifecycle == null");
     Preconditions.checkNotNull(event, "event == null");
 
-    return new UntilEventObservableTransformer<>(lifecycle, event);
+    return new UntilUnlifeObservableTransformer<>(lifecycle, event);
   }
 
   /**

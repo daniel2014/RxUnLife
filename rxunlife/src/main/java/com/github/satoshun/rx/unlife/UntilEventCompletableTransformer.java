@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import rx.Completable;
 import rx.Observable;
 
-import static com.github.satoshun.rx.unlife.TakeUntilGenerator.takeUntilEvent;
+import static com.github.satoshun.rx.unlife.TakeUntilGenerator.takeUnlifeEvent;
 
 /**
  * Continues a subscription until it sees a particular lifecycle event.
@@ -24,7 +24,7 @@ final class UntilEventCompletableTransformer<T> implements Completable.Transform
   public Completable call(Completable source) {
     return Completable.amb(
         source,
-        takeUntilEvent(lifecycle, event)
+        takeUnlifeEvent(lifecycle, event)
             .flatMap(Functions.CANCEL_COMPLETABLE)
             .toCompletable()
     );

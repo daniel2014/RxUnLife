@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import rx.Observable;
 import rx.Single;
 
-import static com.github.satoshun.rx.unlife.TakeUntilGenerator.takeUntilEvent;
+import static com.github.satoshun.rx.unlife.TakeUntilGenerator.takeUnlifeEvent;
 
 /**
  * Continues a subscription until it sees a particular lifecycle event.
@@ -22,7 +22,7 @@ final class UntilEventSingleTransformer<T, R> implements Single.Transformer<T, T
 
   @Override
   public Single<T> call(Single<T> source) {
-    return source.takeUntil(takeUntilEvent(lifecycle, event));
+    return source.takeUntil(takeUnlifeEvent(lifecycle, event));
   }
 
   @Override

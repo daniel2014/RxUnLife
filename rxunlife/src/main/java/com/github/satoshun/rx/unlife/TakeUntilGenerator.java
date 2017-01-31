@@ -9,7 +9,7 @@ import rx.functions.Func2;
 final class TakeUntilGenerator {
 
   @Nonnull
-  static <T> Observable<T> takeUntilEvent(
+  static <T> Observable<T> takeUnlifeEvent(
       @Nonnull final Observable<T> lifecycle, @Nonnull final T event) {
     return lifecycle.takeFirst(new Func1<T, Boolean>() {
       @Override

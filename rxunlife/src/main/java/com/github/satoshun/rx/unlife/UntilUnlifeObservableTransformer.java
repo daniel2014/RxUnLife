@@ -6,24 +6,24 @@ import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
-import static com.github.satoshun.rx.unlife.TakeUntilGenerator.takeUntilEvent;
+import static com.github.satoshun.rx.unlife.TakeUntilGenerator.takeUnlifeEvent;
 
 /**
  * Continues a subscription until it sees a particular lifecycle event.
  */
-final class UntilEventObservableTransformer<T, R> implements LifecycleTransformer<T> {
+final class UntilUnlifeObservableTransformer<T, R> implements LifecycleTransformer<T> {
 
   final Observable<R> lifecycle;
   final R event;
 
-  public UntilEventObservableTransformer(@Nonnull Observable<R> lifecycle, @Nonnull R event) {
+  public UntilUnlifeObservableTransformer(@Nonnull Observable<R> lifecycle, @Nonnull R event) {
     this.lifecycle = lifecycle;
     this.event = event;
   }
 
   @Override
   public Observable<T> call(Observable<T> source) {
-    return source.takeUntil(takeUntilEvent(lifecycle, event));
+    return source.lift(new OperatorUntilUnlife(takeUnlifeEvent(lifecycle, event)));
   }
 
   @Nonnull
@@ -35,7 +35,7 @@ final class UntilEventObservableTransformer<T, R> implements LifecycleTransforme
   @Nonnull
   @Override
   public Completable.Transformer forCompletable() {
-    return new com.github.satoshun.rx.unlife.UntilEventCompletableTransformer<>(lifecycle, event);
+    return new UntilEventCompletableTransformer<>(lifecycle, event);
   }
 
   @Override
@@ -47,7 +47,7 @@ final class UntilEventObservableTransformer<T, R> implements LifecycleTransforme
       return false;
     }
 
-    UntilEventObservableTransformer<?, ?> that = (UntilEventObservableTransformer<?, ?>) o;
+    UntilUnlifeObservableTransformer<?, ?> that = (UntilUnlifeObservableTransformer<?, ?>) o;
 
     if (!lifecycle.equals(that.lifecycle)) {
       return false;
@@ -64,7 +64,7 @@ final class UntilEventObservableTransformer<T, R> implements LifecycleTransforme
 
   @Override
   public String toString() {
-    return "UntilEventObservableTransformer{" +
+    return "UntilUnlifeObservableTransformer{" +
         "lifecycle=" + lifecycle +
         ", event=" + event +
         '}';
