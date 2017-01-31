@@ -1,44 +1,36 @@
 buildscript {
-    ext {
-        //version here to share between build script and projects
-        //todo https://github.com/JetBrains/kotlin/pull/775 : remove if it will be merged
-        verKotlin = '1.0.4'
-    }
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$verKotlin"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$verKotlin"
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-    }
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.2.2'
+    classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+  }
 }
 
 subprojects {
-    group = GROUP
-    version = VERSION_NAME
+  group = GROUP
+  version = VERSION_NAME
 }
 
 apply plugin: 'com.github.ben-manes.versions'
 
 ext {
-    minSdkVersion = 14
-    compileSdkVersion = 25
-    targetSdkVersion = compileSdkVersion
-    buildToolsVersion = '25'
+  minSdkVersion = 14
+  compileSdkVersion = 25
+  targetSdkVersion = compileSdkVersion
+  buildToolsVersion = '25'
 
-    sourceCompatibilityVersion = JavaVersion.VERSION_1_7
-    targetCompatibilityVersion = JavaVersion.VERSION_1_7
+  sourceCompatibilityVersion = JavaVersion.VERSION_1_7
+  targetCompatibilityVersion = JavaVersion.VERSION_1_7
 
-    // Define all dependencies in the base project, to unify & make it easy to update
-    rxJava = 'io.reactivex:rxjava:1.2.1'
-    rxBinding = 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-    navi = 'com.trello:navi:1.0'
-    kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$verKotlin"
-    appCompat = 'com.android.support:appcompat-v7:25.0.0'
-    jsr305Annotations = 'com.google.code.findbugs:jsr305:3.0.1'
-    junit = 'junit:junit:4.12'
-    robolectric = 'org.robolectric:robolectric:3.1.4'
+  // Define all dependencies in the base project, to unify & make it easy to update
+  rxJava = 'io.reactivex:rxjava:1.2.1'
+  rxBinding = 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+  navi = 'com.trello:navi:1.0'
+  appCompat = 'com.android.support:appcompat-v7:25.1.1'
+  jsr305Annotations = 'com.google.code.findbugs:jsr305:3.0.1'
+  junit = 'junit:junit:4.12'
+  robolectric = 'org.robolectric:robolectric:3.1.4'
 }

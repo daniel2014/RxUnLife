@@ -1,2 +1,2 @@
-include ':rxlifecycle'
-include ':rxlifecycle-android'
+include ':rxunlife'
+include ':rxunlife-android'

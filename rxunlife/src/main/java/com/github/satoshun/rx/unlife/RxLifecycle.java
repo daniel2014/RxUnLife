@@ -20,7 +20,6 @@ import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 
 import rx.Observable;
-import rx.functions.Func1;
 
 public class RxLifecycle {
 
@@ -64,13 +63,13 @@ public class RxLifecycle {
    * @param lifecycle the lifecycle sequence
    * @return a reusable {@link Observable.Transformer} that unsubscribes the source whenever the lifecycle emits
    */
-  @Nonnull
-  @CheckReturnValue
-  public static <T, R> LifecycleTransformer<T> bind(@Nonnull final Observable<R> lifecycle) {
-    Preconditions.checkNotNull(lifecycle, "lifecycle == null");
-
-    return new UntilLifecycleObservableTransformer<>(lifecycle);
-  }
+//  @Nonnull
+//  @CheckReturnValue
+//  public static <T, R> LifecycleTransformer<T> bind(@Nonnull final Observable<R> lifecycle) {
+//    Preconditions.checkNotNull(lifecycle, "lifecycle == null");
+//
+//    return new UntilLifecycleObservableTransformer<>(lifecycle);
+//  }
 
   /**
    * Binds the given source to a lifecycle.
@@ -86,15 +85,15 @@ public class RxLifecycle {
    * @param correspondingEvents a function which tells the source when to unsubscribe
    * @return a reusable {@link Observable.Transformer} that unsubscribes the source during the Fragment lifecycle
    */
-  @Nonnull
-  @CheckReturnValue
-  public static <T, R> LifecycleTransformer<T> bind(@Nonnull Observable<R> lifecycle,
-                                                    @Nonnull
-                                                    final Func1<R, R> correspondingEvents) {
-    Preconditions.checkNotNull(lifecycle, "lifecycle == null");
-    Preconditions.checkNotNull(correspondingEvents, "correspondingEvents == null");
-
-    // Keep emitting from source until the corresponding event occurs in the lifecycle
-    return new UntilCorrespondingEventObservableTransformer<>(lifecycle.share(), correspondingEvents);
-  }
+//  @Nonnull
+//  @CheckReturnValue
+//  public static <T, R> LifecycleTransformer<T> bind(@Nonnull Observable<R> lifecycle,
+//                                                    @Nonnull
+//                                                    final Func1<R, R> correspondingEvents) {
+//    Preconditions.checkNotNull(lifecycle, "lifecycle == null");
+//    Preconditions.checkNotNull(correspondingEvents, "correspondingEvents == null");
+//
+//    // Keep emitting from source until the corresponding event occurs in the lifecycle
+//    return new UntilCorrespondingEventObservableTransformer<>(lifecycle.share(), correspondingEvents);
+//  }
 }
