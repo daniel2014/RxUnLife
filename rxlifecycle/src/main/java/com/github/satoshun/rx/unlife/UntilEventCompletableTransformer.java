@@ -1,9 +1,9 @@
 package com.github.satoshun.rx.unlife;
 
+import javax.annotation.Nonnull;
+
 import rx.Completable;
 import rx.Observable;
-
-import javax.annotation.Nonnull;
 
 import static com.github.satoshun.rx.unlife.TakeUntilGenerator.takeUntilEvent;
 
@@ -12,40 +12,46 @@ import static com.github.satoshun.rx.unlife.TakeUntilGenerator.takeUntilEvent;
  */
 final class UntilEventCompletableTransformer<T> implements Completable.Transformer {
 
-    final Observable<T> lifecycle;
-    final T event;
+  final Observable<T> lifecycle;
+  final T event;
 
-    public UntilEventCompletableTransformer(@Nonnull Observable<T> lifecycle, @Nonnull T event) {
-        this.lifecycle = lifecycle;
-        this.event = event;
+  public UntilEventCompletableTransformer(@Nonnull Observable<T> lifecycle, @Nonnull T event) {
+    this.lifecycle = lifecycle;
+    this.event = event;
+  }
+
+  @Override
+  public Completable call(Completable source) {
+    return Completable.amb(
+        source,
+        takeUntilEvent(lifecycle, event)
+            .flatMap(Functions.CANCEL_COMPLETABLE)
+            .toCompletable()
+    );
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    @Override
-    public Completable call(Completable source) {
-        return Completable.amb(
-            source,
-            takeUntilEvent(lifecycle, event)
-                .flatMap(Functions.CANCEL_COMPLETABLE)
-                .toCompletable()
-        );
+    UntilEventCompletableTransformer<?> that = (UntilEventCompletableTransformer<?>) o;
+
+    if (!lifecycle.equals(that.lifecycle)) {
+      return false;
     }
+    return event.equals(that.event);
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        UntilEventCompletableTransformer<?> that = (UntilEventCompletableTransformer<?>) o;
-
-        if (!lifecycle.equals(that.lifecycle)) { return false; }
-        return event.equals(that.event);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = lifecycle.hashCode();
-        result = 31 * result + event.hashCode();
-        return result;
-    }
+  @Override
+  public int hashCode() {
+    int result = lifecycle.hashCode();
+    result = 31 * result + event.hashCode();
+    return result;
+  }
 
 }
