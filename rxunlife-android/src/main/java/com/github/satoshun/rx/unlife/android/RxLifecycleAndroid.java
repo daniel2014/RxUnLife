@@ -41,7 +41,7 @@ public class RxLifecycleAndroid {
 //   */
 //  @NonNull
 //  @CheckResult
-//  public static <T> com.github.satoshun.rx.unlife.LifecycleTransformer<T> bindActivity(
+//  public static <T> com.github.satoshun.rx.unlife.UnLifeTransformer<T> bindActivity(
 //      @NonNull final Observable<ActivityEvent> lifecycle) {
 //    return bind(lifecycle, ACTIVITY_LIFECYCLE);
 //  }
@@ -66,7 +66,7 @@ public class RxLifecycleAndroid {
 //   */
 //  @NonNull
 //  @CheckResult
-//  public static <T> com.github.satoshun.rx.unlife.LifecycleTransformer<T> bindFragment(
+//  public static <T> com.github.satoshun.rx.unlife.UnLifeTransformer<T> bindFragment(
 //      @NonNull final Observable<com.github.satoshun.rx.unlife.android.FragmentEvent> lifecycle) {
 //    return bind(lifecycle, FRAGMENT_LIFECYCLE);
 //  }
@@ -87,7 +87,7 @@ public class RxLifecycleAndroid {
 //   */
 //  @NonNull
 //  @CheckResult
-//  public static <T> com.github.satoshun.rx.unlife.LifecycleTransformer<T> bindView(
+//  public static <T> com.github.satoshun.rx.unlife.UnLifeTransformer<T> bindView(
 //      @NonNull final View view) {
 //    checkNotNull(view, "view == null");
 //

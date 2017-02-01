@@ -21,9 +21,9 @@ import javax.annotation.Nonnull;
 
 import rx.Observable;
 
-public class RxLifecycle {
+public class RxUnLife {
 
-  private RxLifecycle() {
+  private RxUnLife() {
     throw new AssertionError("No instances");
   }
 
@@ -33,7 +33,7 @@ public class RxLifecycle {
    * When the lifecycle event occurs, the source will cease to emit any notifications.
    * <p>
    * Use with {@link Observable#compose(Observable.Transformer)}:
-   * {@code source.compose(RxLifecycle.bindUntilEvent(lifecycle, ActivityEvent.STOP)).subscribe()}
+   * {@code source.compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.STOP)).subscribe()}
    *
    * @param lifecycle the lifecycle sequence
    * @param event     the event which should conclude notifications from the source
@@ -41,7 +41,7 @@ public class RxLifecycle {
    */
   @Nonnull
   @CheckReturnValue
-  public static <T, R> LifecycleTransformer<T> bindUntilEvent(
+  public static <T, R> UnLifeTransformer<T> bindUntilEvent(
       @Nonnull final Observable<R> lifecycle,
       @Nonnull final R event) {
     Preconditions.checkNotNull(lifecycle, "lifecycle == null");
@@ -54,7 +54,7 @@ public class RxLifecycle {
    * Binds the given source to a lifecycle.
    * <p>
    * Use with {@link Observable#compose(Observable.Transformer)}:
-   * {@code source.compose(RxLifecycle.bind(lifecycle)).subscribe()}
+   * {@code source.compose(RxUnLife.bind(lifecycle)).subscribe()}
    * <p>
    * This helper automatically determines (based on the lifecycle sequence itself) when the source
    * should stop emitting items. Note that for this method, it assumes <em>any</em> event
@@ -65,7 +65,7 @@ public class RxLifecycle {
    */
 //  @Nonnull
 //  @CheckReturnValue
-//  public static <T, R> LifecycleTransformer<T> bind(@Nonnull final Observable<R> lifecycle) {
+//  public static <T, R> UnLifeTransformer<T> bind(@Nonnull final Observable<R> lifecycle) {
 //    Preconditions.checkNotNull(lifecycle, "lifecycle == null");
 //
 //    return new UntilLifecycleObservableTransformer<>(lifecycle);
@@ -87,7 +87,7 @@ public class RxLifecycle {
    */
 //  @Nonnull
 //  @CheckReturnValue
-//  public static <T, R> LifecycleTransformer<T> bind(@Nonnull Observable<R> lifecycle,
+//  public static <T, R> UnLifeTransformer<T> bind(@Nonnull Observable<R> lifecycle,
 //                                                    @Nonnull
 //                                                    final Func1<R, R> correspondingEvents) {
 //    Preconditions.checkNotNull(lifecycle, "lifecycle == null");

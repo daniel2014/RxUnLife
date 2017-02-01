@@ -28,7 +28,7 @@ public interface LifecycleProvider<E> {
    * @return a reusable {@link Observable.Transformer} which unsubscribes when the event triggers.
    */
   @Nonnull
-  @CheckReturnValue <T> LifecycleTransformer<T> bindUntilEvent(@Nonnull E event);
+  @CheckReturnValue <T> UnLifeTransformer<T> bindUntilEvent(@Nonnull E event);
 
   /**
    * Binds a source until the next reasonable event occurs.
@@ -38,5 +38,5 @@ public interface LifecycleProvider<E> {
    * @return a reusable {@link Observable.Transformer} which unsubscribes at the correct time.
    */
   @Nonnull
-  @CheckReturnValue <T> LifecycleTransformer<T> bindToLifecycle();
+  @CheckReturnValue <T> UnLifeTransformer<T> bindToLifecycle();
 }

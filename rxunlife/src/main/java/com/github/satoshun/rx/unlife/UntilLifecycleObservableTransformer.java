@@ -9,7 +9,7 @@ import rx.Single;
 /**
  * Continues a subscription until it sees *any* lifecycle event.
  */
-final class UntilLifecycleObservableTransformer<T, R> implements LifecycleTransformer<T> {
+final class UntilLifecycleObservableTransformer<T, R> implements UnLifeTransformer<T> {
 
   final Observable<R> lifecycle;
 

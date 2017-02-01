@@ -13,7 +13,7 @@ import rx.functions.Func1;
  * That lifecycle event is determined based on what stage we're at in
  * the current lifecycle.
  */
-final class UntilCorrespondingEventObservableTransformer<T, R> implements LifecycleTransformer<T> {
+final class UntilCorrespondingEventObservableTransformer<T, R> implements UnLifeTransformer<T> {
 
   final Observable<R> sharedLifecycle;
   final Func1<R, R> correspondingEvents;

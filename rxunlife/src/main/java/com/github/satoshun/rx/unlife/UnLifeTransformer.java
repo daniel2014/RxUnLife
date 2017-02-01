@@ -13,7 +13,7 @@ import rx.Single;
  * Out of the box, it works for Observable. But it can be easily converted
  * for {@link Single} or for {@link Completable}.
  */
-public interface LifecycleTransformer<T> extends Observable.Transformer<T, T> {
+public interface UnLifeTransformer<T> extends Observable.Transformer<T, T> {
 
   /**
    * @return a version of this Transformer for {@link Single} streams.

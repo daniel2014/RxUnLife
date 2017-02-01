@@ -11,7 +11,7 @@ import static com.github.satoshun.rx.unlife.TakeUntilGenerator.takeUnlifeEvent;
 /**
  * Continues a subscription until it sees a particular lifecycle event.
  */
-final class UntilUnlifeObservableTransformer<T, R> implements LifecycleTransformer<T> {
+final class UntilUnlifeObservableTransformer<T, R> implements UnLifeTransformer<T> {
 
   final Observable<R> lifecycle;
   final R event;

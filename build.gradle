@@ -3,9 +3,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.2.2'
-    classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
-    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+    classpath 'com.android.tools.build:gradle:2.3.0-beta3'
   }
 }
 
@@ -13,8 +11,6 @@ subprojects {
   group = GROUP
   version = VERSION_NAME
 }
-
-apply plugin: 'com.github.ben-manes.versions'
 
 ext {
   minSdkVersion = 14
