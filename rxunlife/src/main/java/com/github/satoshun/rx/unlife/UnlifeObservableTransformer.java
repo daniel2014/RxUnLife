@@ -1,8 +1,9 @@
 package com.github.satoshun.rx.unlife;
 
+import com.github.satoshun.rx.unlife.internal.OperatorUntilUnlife;
+
 import javax.annotation.Nonnull;
 
-import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
@@ -11,32 +12,32 @@ import static com.github.satoshun.rx.unlife.TakeUntilGenerator.takeUnlifeEvent;
 /**
  * Continues a subscription until it sees a particular lifecycle event.
  */
-final class UntilUnlifeObservableTransformer<T, R> implements UnLifeTransformer<T> {
+public class UnlifeObservableTransformer<T, R> implements UnLifeTransformer<T> {
 
   final Observable<R> lifecycle;
   final R event;
 
-  public UntilUnlifeObservableTransformer(@Nonnull Observable<R> lifecycle, @Nonnull R event) {
+  public UnlifeObservableTransformer(@Nonnull Observable<R> lifecycle, @Nonnull R event) {
     this.lifecycle = lifecycle;
     this.event = event;
   }
 
   @Override
   public Observable<T> call(Observable<T> source) {
-    return source.lift(new OperatorUntilUnlife(takeUnlifeEvent(lifecycle, event)));
+    return source.lift(new OperatorUntilUnlife<T, R>(takeUnlifeEvent(lifecycle, event)));
   }
 
   @Nonnull
   @Override
   public Single.Transformer<T, T> forSingle() {
-    return new UntilEventSingleTransformer<>(lifecycle, event);
+    return new UnlifeSingleTransformer<>(lifecycle, event);
   }
 
-  @Nonnull
-  @Override
-  public Completable.Transformer forCompletable() {
-    return new UntilEventCompletableTransformer<>(lifecycle, event);
-  }
+//  @Nonnull
+//  @Override
+//  public Completable.Transformer forCompletable() {
+//    return new UntilEventCompletableTransformer<>(lifecycle, event);
+//  }
 
   @Override
   public boolean equals(Object o) {
@@ -47,7 +48,7 @@ final class UntilUnlifeObservableTransformer<T, R> implements UnLifeTransformer<
       return false;
     }
 
-    UntilUnlifeObservableTransformer<?, ?> that = (UntilUnlifeObservableTransformer<?, ?>) o;
+    UnlifeObservableTransformer<?, ?> that = (UnlifeObservableTransformer<?, ?>) o;
 
     if (!lifecycle.equals(that.lifecycle)) {
       return false;
@@ -64,7 +65,7 @@ final class UntilUnlifeObservableTransformer<T, R> implements UnLifeTransformer<
 
   @Override
   public String toString() {
-    return "UntilUnlifeObservableTransformer{" +
+    return "UnlifeObservableTransformer{" +
         "lifecycle=" + lifecycle +
         ", event=" + event +
         '}';

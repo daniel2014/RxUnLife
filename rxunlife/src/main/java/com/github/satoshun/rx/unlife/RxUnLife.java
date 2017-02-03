@@ -47,7 +47,7 @@ public class RxUnLife {
     Preconditions.checkNotNull(lifecycle, "lifecycle == null");
     Preconditions.checkNotNull(event, "event == null");
 
-    return new UntilUnlifeObservableTransformer<>(lifecycle, event);
+    return new UnlifeObservableTransformer<>(lifecycle, event);
   }
 
   /**

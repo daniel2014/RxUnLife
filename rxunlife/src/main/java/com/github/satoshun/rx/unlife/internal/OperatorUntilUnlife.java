@@ -14,17 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.satoshun.rx.unlife;
+package com.github.satoshun.rx.unlife.internal;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.observers.SerializedSubscriber;
 
-final class OperatorUntilUnlife<T, E> implements Observable.Operator<T, T> {
+public final class OperatorUntilUnlife<T, E> implements Observable.Operator<T, T> {
 
   private final Observable<? extends E> other;
 
-  OperatorUntilUnlife(final Observable<? extends E> other) {
+  public OperatorUntilUnlife(final Observable<? extends E> other) {
     this.other = other;
   }
 

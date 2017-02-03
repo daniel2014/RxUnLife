@@ -39,35 +39,74 @@ public class MainActivity extends AppCompatActivity {
         .create(GithubClient.class);
 
     sampleObservable();
+    sampleSingle();
   }
 
   private void sampleObservable() {
     // release when CREATE cycle: this is not called
     github.observable()
-        .doAfterTerminate(() -> Log.d("create: not call", "doAfterTerminate"))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.CREATE))
         .subscribe(
-            v -> Log.d("create: not call", String.valueOf(v)),
-            e -> Log.d("create: not call", String.valueOf(e)),
-            () -> Log.d("create: not call", "completed"));
+            v -> Log.d("observable: not call", String.valueOf(v)),
+            e -> Log.d("observable: not call", String.valueOf(e)),
+            () -> Log.d("observable: not call", "completed"));
 
     // release when PAUSE cycle: this is called
     github.observable()
-        .doAfterTerminate(() -> Log.d("observable: call", "doAfterTerminate"))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.PAUSE))
         .subscribe(
-            v -> Log.d("observable: call", String.valueOf(v)),
-            e -> Log.d("observable: call", String.valueOf(e)),
-            () -> Log.d("observable: call", "completed"));
+            v -> Log.d("observable success: call", String.valueOf(v)),
+            e -> Log.d("observable success: call", String.valueOf(e)),
+            () -> Log.d("observable success: call", "completed"));
+
+    // release when PAUSE cycle: this is called
+    github.observableError()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.PAUSE))
+        .subscribe(
+            v -> Log.d("observable error: call", String.valueOf(v)),
+            e -> Log.d("observable error: call", String.valueOf(e)),
+            () -> Log.d("observable error: call", "completed"));
+  }
+
+  private void sampleSingle() {
+    github.single()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.CREATE).forSingle())
+        .subscribe(
+            v -> Log.d("single: not call", String.valueOf(v)),
+            e -> Log.d("single: not call", String.valueOf(e)));
+
+    github.single()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.STOP).forSingle())
+        .subscribe(
+            v -> Log.d("single success: call", String.valueOf(v)),
+            e -> Log.d("single success: call", String.valueOf(e)));
+
+    github.singleError()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.STOP).forSingle())
+        .subscribe(
+            v -> Log.d("single error: call", String.valueOf(v)),
+            e -> Log.d("single error: call", String.valueOf(e)));
   }
 
   interface GithubClient {
     @GET("meta") Observable<Object> observable();
 
+    @GET("meta/hoge") Observable<Object> observableError();
+
     @GET("meta") Single<Object> single();
+
+    @GET("meta/hoge") Single<Object> singleError();
   }
 }
