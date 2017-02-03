@@ -33,12 +33,6 @@ public class UnlifeObservableTransformer<T, R> implements UnLifeTransformer<T> {
     return new UnlifeSingleTransformer<>(lifecycle, event);
   }
 
-//  @Nonnull
-//  @Override
-//  public Completable.Transformer forCompletable() {
-//    return new UntilEventCompletableTransformer<>(lifecycle, event);
-//  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {

@@ -2,7 +2,6 @@ package com.github.satoshun.rx.unlife;
 
 import javax.annotation.Nonnull;
 
-import rx.Completable;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
@@ -33,12 +32,6 @@ final class UntilCorrespondingEventObservableTransformer<T, R> implements UnLife
   @Override
   public Single.Transformer<T, T> forSingle() {
     return new UntilCorrespondingEventSingleTransformer<>(sharedLifecycle, correspondingEvents);
-  }
-
-  @Nonnull
-  @Override
-  public Completable.Transformer forCompletable() {
-    return new UntilCorrespondingEventCompletableTransformer<>(sharedLifecycle, correspondingEvents);
   }
 
   @Override
