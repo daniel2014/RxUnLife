@@ -18,6 +18,7 @@ ext {
 
   // Define all dependencies in the base project, to unify & make it easy to update
   rxJava = 'io.reactivex:rxjava:1.2.6'
+  rxAndroid = 'io.reactivex:rxandroid:1.2.1'
   rxBinding = 'com.jakewharton.rxbinding:rxbinding:0.4.0'
   appCompat = 'com.android.support:appcompat-v7:25.1.1'
   jsr305Annotations = 'com.google.code.findbugs:jsr305:3.0.1'
