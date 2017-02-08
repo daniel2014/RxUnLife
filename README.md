@@ -1,122 +1,48 @@
 # RxUnLife
 
-The utilities provided here allow for automatic completion of sequences based on `Activity` or `Fragment`
+The utilities provided here allow for automatic unsubscription of sequences based on `Activity` or `Fragment`
 lifecycle events. This capability is useful in Android, where incomplete subscriptions can cause memory leaks.
 
-**Looking for an RxJava 2 compatible library? Check out [the RxLifecycle 2.x branch](https://github.com/trello/RxLifecycle/tree/2.x).**
+
+## What different between RxUnLife and RxLifeCycle
+
+- RxLifeCycle provided automatic **completion**
+  - Observable: call `onComplete` when stream is ended
+  - Single: call `onError` when stream is ended
+- RxUnLife provided automatic **unsubscription**
+  - Observable: doesn't call any Subscriber methods when stream is ended
+  - Single: doesn't call any Subscriber methods when stream is ended
+
+I want a unsubscription stream. but RxLifeCycle(takeUntil operator) creates completion stream.
+
 
 ## Usage
 
 You must provide an `Observable<ActivityEvent>` or `Observable<FragmentEvent>` that gives
-RxLifecycle the information needed to complete the sequence at the correct time.
+RxUnLife the information needed to complete the sequence at the correct time.
 
 You can then end the sequence explicitly when an event occurs:
 
 ```java
 myObservable
-    .compose(RxLifecycle.bindUntilEvent(lifecycle, ActivityEvent.DESTROY))
+    .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.DESTROY))
     .subscribe();
 ```
 
-Alternatively, you can let RxLifecycle determine the appropriate time to end the sequence:
+## Single
 
-```java
-myObservable
-    .compose(RxLifecycleAndroid.bindActivity(lifecycle))
-    .subscribe();
-```
-
-It assumes you want to end the sequence in the opposing lifecycle event - e.g., if subscribing during `START`, it will
-terminate on `STOP`. If you subscribe after `PAUSE`, it will terminate at the next destruction event (e.g.,
-`PAUSE` will terminate in `STOP`).
-
-## Single and Completable
-
-RxLifecycle supports both `Single` and `Completable` via the `LifecycleTransformer`. You can
-convert any returned `LifecycleTransformer` into a `Single.Transformer` or `Completable.Transformer`
-via the `forSingle()` and `forCompletable()` methods:
+RxUnLife supports `Single` via the `UnLifeTransformer`. You can convert returned `UnLifeTransformer`
+into a `Single.Transformer` via the `forSingle()` method:
 
 ```java
 mySingle
-    .compose(RxLifecycleAndroid.bindActivity(lifecycle).forSingle())
+    .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.DESTROY).forSingle())
     .subscribe();
 ```
 
-## Providers
-
-Where do the sequences of `ActivityEvent` or `FragmentEvent` come from? Generally, they are provided by
-an appropriate `LifecycleProvider<T>`. But where are those implemented?
-
-You have a few options for that:
-
-1. Use rxlifecycle-components and subclass the provided `RxActivity`, `RxFragment`, etc. classes.
-1. Use [Navi](https://github.com/trello/navi/) + rxlifecycle-navi to generate providers.
-1. Write the implementation yourself.
-
-If you use rxlifecycle-components, just extend the appropriate class, then use the built-in `bindToLifecycle()` (or `bindUntilEvent()`) methods:
-
-```java
-public class MyActivity extends RxActivity {
-    @Override
-    public void onResume() {
-        super.onResume();
-        myObservable
-            .compose(bindToLifecycle())
-            .subscribe();
-    }
-}
-```
-
-If you use rxlifecycle-navi, then you just pass your `NaviComponent` to `NaviLifecycle` to generate a provider:
-
-```java
-public class MyActivity extends NaviActivity {
-    private final LifecycleProvider<ActivityEvent> provider
-        = NaviLifecycle.createActivityLifecycleProvider(this);
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        myObservable
-            .compose(provider.bindToLifecycle())
-            .subscribe();
-    }
-}
-```
-
-If you want some Kotlin goodness, you can use built-in extensions:
-
-```java
-myObservable
-    .bindToLifecycle(myView)
-    .subscribe { }
-
-myObservable
-    .bindUntilEvent(myRxActivity, STOP)
-    .subscribe { }
-```
-
-## Unsubscription
-
-RxLifecycle does not actually unsubscribe the sequence. Instead it terminates the sequence. The way in which
-it does so varies based on the type:
-
-- `Observable` - emits `onCompleted()`
-- `Single` and `Completable` - emits `onError(CancellationException)`
-
-If a sequence requires the `Subscription.unsubscribe()` behavior, then it is suggested that you manually handle
-the `Subscription` yourself and call `unsubscribe()` when appropriate.
-
-## Installation
-
-
-## Related Libraries
-
-- [Android-Lint-Checks](https://github.com/vokal/Android-Lint-Checks) - Contains an RxLifecycle Lint check.
-
 ## License
 
-    Copyright (C) 2016 Sato Shun
+    Copyright (C) 2017 Sato Shun
 
     Copyright (C) 2016 Trello
 
