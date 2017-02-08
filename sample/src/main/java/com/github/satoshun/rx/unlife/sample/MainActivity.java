@@ -43,61 +43,67 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void sampleObservable() {
-    // release when CREATE cycle: this is not called
+    // unsubscribe when CREATE cycle: this is not called
     github.observable()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnUnsubscribe(() -> Log.d("observable:unlife", "doOnUnsubscribe"))
         .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.CREATE))
         .subscribe(
-            v -> Log.d("observable: not call", String.valueOf(v)),
-            e -> Log.d("observable: not call", String.valueOf(e)),
-            () -> Log.d("observable: not call", "completed"));
+            v -> Log.d("observable:unlife", String.valueOf(v)),
+            e -> Log.d("observable:unlife", String.valueOf(e)),
+            () -> Log.d("observable:unlife", "completed"));
 
-    // release when PAUSE cycle: this is called
+    // unsubscribe when PAUSE cycle: this is called
     github.observable()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnUnsubscribe(() -> Log.d("observable success", "doOnUnsubscribe"))
         .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.PAUSE))
         .subscribe(
-            v -> Log.d("observable success: call", String.valueOf(v)),
-            e -> Log.d("observable success: call", String.valueOf(e)),
-            () -> Log.d("observable success: call", "completed"));
+            v -> Log.d("observable success", String.valueOf(v)),
+            e -> Log.d("observable success", String.valueOf(e)),
+            () -> Log.d("observable success", "completed"));
 
-    // release when PAUSE cycle: this is called
+    // unsubscribe when PAUSE cycle: this is called
     github.observableError()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnUnsubscribe(() -> Log.d("observable error", "doOnUnsubscribe"))
         .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.PAUSE))
         .subscribe(
-            v -> Log.d("observable error: call", String.valueOf(v)),
-            e -> Log.d("observable error: call", String.valueOf(e)),
-            () -> Log.d("observable error: call", "completed"));
+            v -> Log.d("observable error", String.valueOf(v)),
+            e -> Log.d("observable error", String.valueOf(e)),
+            () -> Log.d("observable error", "completed"));
   }
 
   private void sampleSingle() {
     github.single()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnUnsubscribe(() -> Log.d("single:unlife", "doOnUnsubscribe"))
         .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.CREATE).forSingle())
         .subscribe(
-            v -> Log.d("single: not call", String.valueOf(v)),
-            e -> Log.d("single: not call", String.valueOf(e)));
+            v -> Log.d("single:unlife", String.valueOf(v)),
+            e -> Log.d("single:unlife", String.valueOf(e)));
 
     github.single()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnUnsubscribe(() -> Log.d("single success", "doOnUnsubscribe"))
         .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.STOP).forSingle())
         .subscribe(
-            v -> Log.d("single success: call", String.valueOf(v)),
-            e -> Log.d("single success: call", String.valueOf(e)));
+            v -> Log.d("single success", String.valueOf(v)),
+            e -> Log.d("single success", String.valueOf(e)));
 
     github.singleError()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnUnsubscribe(() -> Log.d("single error", "doOnUnsubscribe"))
         .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.STOP).forSingle())
         .subscribe(
-            v -> Log.d("single error: call", String.valueOf(v)),
-            e -> Log.d("single error: call", String.valueOf(e)));
+            v -> Log.d("single error", String.valueOf(v)),
+            e -> Log.d("single error", String.valueOf(e)));
   }
 
   interface GithubClient {

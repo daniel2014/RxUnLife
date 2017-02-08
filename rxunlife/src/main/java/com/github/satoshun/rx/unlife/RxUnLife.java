@@ -63,37 +63,11 @@ public class RxUnLife {
    * @param lifecycle the lifecycle sequence
    * @return a reusable {@link Observable.Transformer} that unsubscribes the source whenever the lifecycle emits
    */
-//  @Nonnull
-//  @CheckReturnValue
-//  public static <T, R> UnLifeTransformer<T> bind(@Nonnull final Observable<R> lifecycle) {
-//    Preconditions.checkNotNull(lifecycle, "lifecycle == null");
-//
-//    return new UntilLifecycleObservableTransformer<>(lifecycle);
-//  }
+  @Nonnull
+  @CheckReturnValue
+  public static <T, R> UnLifeTransformer<T> bind(@Nonnull final Observable<R> lifecycle) {
+    Preconditions.checkNotNull(lifecycle, "lifecycle == null");
 
-  /**
-   * Binds the given source to a lifecycle.
-   * <p>
-   * This method determines (based on the lifecycle sequence itself) when the source
-   * should stop emitting items. It uses the provided correspondingEvents function to determine
-   * when to unsubscribe.
-   * <p>
-   * Note that this is an advanced usage of the library and should generally be used only if you
-   * really know what you're doing with a given lifecycle.
-   *
-   * @param lifecycle the lifecycle sequence
-   * @param correspondingEvents a function which tells the source when to unsubscribe
-   * @return a reusable {@link Observable.Transformer} that unsubscribes the source during the Fragment lifecycle
-   */
-//  @Nonnull
-//  @CheckReturnValue
-//  public static <T, R> UnLifeTransformer<T> bind(@Nonnull Observable<R> lifecycle,
-//                                                    @Nonnull
-//                                                    final Func1<R, R> correspondingEvents) {
-//    Preconditions.checkNotNull(lifecycle, "lifecycle == null");
-//    Preconditions.checkNotNull(correspondingEvents, "correspondingEvents == null");
-//
-//    // Keep emitting from source until the corresponding event occurs in the lifecycle
-//    return new UntilCorrespondingEventObservableTransformer<>(lifecycle.share(), correspondingEvents);
-//  }
+    return new UntilUnlifeObservableTransformer<>(lifecycle);
+  }
 }

@@ -1,5 +1,7 @@
 package com.github.satoshun.rx.unlife;
 
+import com.github.satoshun.rx.unlife.internal.OperatorUntilUnlife;
+
 import javax.annotation.Nonnull;
 
 import rx.Observable;
@@ -8,17 +10,23 @@ import rx.Single;
 /**
  * Continues a subscription until it sees *any* lifecycle event.
  */
-final class UntilLifecycleSingleTransformer<T, R> implements Single.Transformer<T, T> {
+final class UntilUnlifeObservableTransformer<T, R> implements UnLifeTransformer<T> {
 
   final Observable<R> lifecycle;
 
-  public UntilLifecycleSingleTransformer(@Nonnull Observable<R> lifecycle) {
+  UntilUnlifeObservableTransformer(@Nonnull Observable<R> lifecycle) {
     this.lifecycle = lifecycle;
   }
 
   @Override
-  public Single<T> call(Single<T> source) {
-    return source.takeUntil(lifecycle);
+  public Observable<T> call(Observable<T> source) {
+    return source.lift(new OperatorUntilUnlife<T, R>(lifecycle));
+  }
+
+  @Nonnull
+  @Override
+  public Single.Transformer<T, T> forSingle() {
+    return new UntilUnLifeSingleTransformer<>(lifecycle);
   }
 
   @Override
@@ -30,7 +38,7 @@ final class UntilLifecycleSingleTransformer<T, R> implements Single.Transformer<
       return false;
     }
 
-    UntilLifecycleSingleTransformer<?, ?> that = (UntilLifecycleSingleTransformer<?, ?>) o;
+    UntilUnlifeObservableTransformer<?, ?> that = (UntilUnlifeObservableTransformer<?, ?>) o;
 
     return lifecycle.equals(that.lifecycle);
   }
@@ -42,7 +50,7 @@ final class UntilLifecycleSingleTransformer<T, R> implements Single.Transformer<
 
   @Override
   public String toString() {
-    return "UntilLifecycleSingleTransformer{" +
+    return "UntilUnlifeObservableTransformer{" +
         "lifecycle=" + lifecycle +
         '}';
   }

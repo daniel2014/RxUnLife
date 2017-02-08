@@ -66,17 +66,19 @@ public final class OperatorUntilUnlife<T, E> implements Observable.Operator<T, T
       @Override
       public void onCompleted() {
         serial.unsubscribe();
+        child.unsubscribe();
       }
 
       @Override
       public void onError(Throwable e) {
         serial.unsubscribe();
+        child.unsubscribe();
       }
 
       @Override
       public void onNext(E t) {
         serial.unsubscribe();
-        ;
+        child.unsubscribe();
       }
     };
 

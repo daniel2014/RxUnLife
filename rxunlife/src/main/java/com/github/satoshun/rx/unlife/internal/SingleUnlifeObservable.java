@@ -38,8 +38,8 @@ public class SingleUnlifeObservable<T, U> implements Single.OnSubscribe<T> {
   @Override
   public void call(SingleSubscriber<? super T> t) {
     UnlifeSourceSubscriber<T, U> parent = new UnlifeSourceSubscriber<>(t);
-    t.add(parent);
 
+    t.add(parent);
     other.subscribe(parent.other);
     source.subscribe(parent);
   }
@@ -89,11 +89,14 @@ public class SingleUnlifeObservable<T, U> implements Single.OnSubscribe<T> {
 
       @Override
       public void onCompleted() {
+        internalUnSubscribe();
       }
 
       private void internalUnSubscribe() {
-        unsubscribe();
-        UnlifeSourceSubscriber.this.unsubscribe();
+        if (once.compareAndSet(false, true)) {
+          UnlifeSourceSubscriber.this.unsubscribe();
+          actual.unsubscribe();
+        }
       }
     }
   }
