@@ -1,8 +1,5 @@
 package com.github.satoshun.rx.unlife;
 
-import java.util.concurrent.CancellationException;
-
-import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 
@@ -25,13 +22,6 @@ final class Functions {
     @Override
     public Boolean call(Boolean shouldComplete) {
       return shouldComplete;
-    }
-  };
-
-  static final Func1<Object, Observable<Object>> CANCEL_COMPLETABLE = new Func1<Object, Observable<Object>>() {
-    @Override
-    public Observable<Object> call(Object ignore) {
-      return Observable.error(new CancellationException());
     }
   };
 

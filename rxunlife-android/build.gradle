@@ -16,8 +16,6 @@ repositories {
 dependencies {
   compile project(':rxunlife')
 
-  compile rootProject.ext.rxBinding
-
   testCompile rootProject.ext.junit
   testCompile rootProject.ext.robolectric
 }
