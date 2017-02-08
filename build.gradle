@@ -9,11 +9,6 @@ buildscript {
   }
 }
 
-subprojects {
-  group = GROUP
-  version = VERSION_NAME
-}
-
 ext {
   minSdkVersion = 14
   compileSdkVersion = 25
