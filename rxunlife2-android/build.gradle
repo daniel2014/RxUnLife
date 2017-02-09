@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-  compile project(':rxunlife')
+  compile project(':rxunlife2')
 
   testCompile rootProject.ext.junit
   testCompile rootProject.ext.robolectric

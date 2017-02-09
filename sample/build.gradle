@@ -34,8 +34,8 @@ repositories {
 }
 
 dependencies {
-  compile project(':rxunlife')
-  compile project(':rxunlife-android')
+  compile project(':rxunlife2')
+  compile project(':rxunlife2-android')
 
   compile 'com.android.support:appcompat-v7:25.1.1'
 
