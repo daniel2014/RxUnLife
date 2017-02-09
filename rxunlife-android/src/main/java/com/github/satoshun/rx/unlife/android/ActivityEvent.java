@@ -15,7 +15,7 @@
 package com.github.satoshun.rx.unlife.android;
 
 /**
- * Lifecycle events that can be emitted by Activities.
+ * RxUnLife events that can be emitted by Activities.
  */
 public enum ActivityEvent {
 
