@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.github.satoshun.rx.unlife.internal;
+package com.github.satoshun.reactive.unlife.internal;
 
 public final class Preconditions {
   public static <T> T checkNotNull(T value, String message) {

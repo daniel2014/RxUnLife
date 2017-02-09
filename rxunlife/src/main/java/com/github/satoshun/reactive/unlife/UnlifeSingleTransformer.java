@@ -1,13 +1,13 @@
-package com.github.satoshun.rx.unlife;
+package com.github.satoshun.reactive.unlife;
 
-import com.github.satoshun.rx.unlife.internal.SingleUnlifeObservable;
+import com.github.satoshun.reactive.unlife.internal.SingleUnlifeObservable;
 
 import javax.annotation.Nonnull;
 
 import rx.Observable;
 import rx.Single;
 
-import static com.github.satoshun.rx.unlife.TakeUntilGenerator.takeUnlifeEvent;
+import static com.github.satoshun.reactive.unlife.TakeUntilGenerator.takeUnlifeEvent;
 
 /**
  * Continues a subscription until it sees a particular lifecycle event.

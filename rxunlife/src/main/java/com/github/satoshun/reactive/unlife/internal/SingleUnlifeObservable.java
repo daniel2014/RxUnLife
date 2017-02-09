@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.github.satoshun.rx.unlife.internal;
+package com.github.satoshun.reactive.unlife.internal;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

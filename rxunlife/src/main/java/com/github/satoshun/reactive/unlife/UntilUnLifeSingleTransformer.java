@@ -1,6 +1,6 @@
-package com.github.satoshun.rx.unlife;
+package com.github.satoshun.reactive.unlife;
 
-import com.github.satoshun.rx.unlife.internal.SingleUnlifeObservable;
+import com.github.satoshun.reactive.unlife.internal.SingleUnlifeObservable;
 
 import javax.annotation.Nonnull;
 

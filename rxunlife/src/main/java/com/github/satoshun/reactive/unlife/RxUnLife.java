@@ -12,9 +12,9 @@
  * limitations under the License.
  */
 
-package com.github.satoshun.rx.unlife;
+package com.github.satoshun.reactive.unlife;
 
-import com.github.satoshun.rx.unlife.internal.Preconditions;
+import com.github.satoshun.reactive.unlife.internal.Preconditions;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;

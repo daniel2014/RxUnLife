@@ -5,7 +5,7 @@ android {
   buildToolsVersion "25.0.2"
 
   defaultConfig {
-    applicationId "com.github.satoshun.rx.unlife.sample"
+    applicationId "com.github.satoshun.reactive.unlife.sample"
     minSdkVersion 21
     targetSdkVersion 25
     versionCode 1

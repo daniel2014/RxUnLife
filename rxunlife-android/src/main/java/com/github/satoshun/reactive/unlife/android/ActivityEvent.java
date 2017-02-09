@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.github.satoshun.rx.unlife.android;
+package com.github.satoshun.reactive.unlife.android;
 
 /**
  * RxUnLife events that can be emitted by Activities.

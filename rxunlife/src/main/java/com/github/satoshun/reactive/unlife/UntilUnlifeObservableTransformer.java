@@ -1,6 +1,6 @@
-package com.github.satoshun.rx.unlife;
+package com.github.satoshun.reactive.unlife;
 
-import com.github.satoshun.rx.unlife.internal.OperatorUntilUnlife;
+import com.github.satoshun.reactive.unlife.internal.OperatorUntilUnlife;
 
 import javax.annotation.Nonnull;
 

@@ -1,11 +1,11 @@
-package com.github.satoshun.rx.unlife.sample;
+package com.github.satoshun.reactive.unlife.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.github.satoshun.rx.unlife.RxUnLife;
-import com.github.satoshun.rx.unlife.android.ActivityEvent;
+import com.github.satoshun.reactive.unlife.RxUnLife;
+import com.github.satoshun.reactive.unlife.android.ActivityEvent;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

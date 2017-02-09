@@ -1,4 +1,4 @@
-package com.github.satoshun.rx.unlife;
+package com.github.satoshun.reactive.unlife;
 
 import javax.annotation.Nullable;
 

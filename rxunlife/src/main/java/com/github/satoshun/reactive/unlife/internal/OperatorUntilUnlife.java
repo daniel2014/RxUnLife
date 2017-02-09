@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.satoshun.rx.unlife.internal;
+package com.github.satoshun.reactive.unlife.internal;
 
 import rx.Observable;
 import rx.Subscriber;

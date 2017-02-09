@@ -1,4 +1,4 @@
-package com.github.satoshun.rx.unlife;
+package com.github.satoshun.reactive.unlife;
 
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
