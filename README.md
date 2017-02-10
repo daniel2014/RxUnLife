@@ -16,6 +16,18 @@ lifecycle events. This capability is useful in Android, where incomplete subscri
 I want a unsubscription stream. but RxLifeCycle(takeUntil operator) creates completion stream.
 
 
+## Install
+
+```gradle
+repositories {
+  maven { url 'https://jitpack.io' }
+}
+
+compile 'com.github.satoshun.RxUnLife:rxunlife:0.2.0'
+compile 'com.github.satoshun.RxUnLife:rxunlife-android:0.2.0' 
+```
+
+
 ## Usage
 
 You must provide an `Observable<ActivityEvent>` or `Observable<FragmentEvent>` that gives
@@ -57,3 +69,4 @@ mySingle
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+    
