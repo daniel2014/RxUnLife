@@ -16,11 +16,11 @@
  */
 package com.github.satoshun.reactive.unlife.internal;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.observers.SerializedSubscriber;
+import io.reactivex.Observable;
+import io.reactivex.ObservableOperator;
+import io.reactivex.Observer;
 
-public final class OperatorUntilUnlife<T, E> implements Observable.Operator<T, T> {
+public final class OperatorUntilUnlife<T, E> implements ObservableOperator<T, T> {
 
   private final Observable<? extends E> other;
 
@@ -28,68 +28,7 @@ public final class OperatorUntilUnlife<T, E> implements Observable.Operator<T, T
     this.other = other;
   }
 
-  @Override
-  public Subscriber<? super T> call(final Subscriber<? super T> child) {
-    final Subscriber<T> serial = new SerializedSubscriber<>(child, false);
-
-    final Subscriber<T> main = new Subscriber<T>(serial, false) {
-      @Override
-      public void onNext(T t) {
-        serial.onNext(t);
-      }
-
-      @Override
-      public void onError(Throwable e) {
-        try {
-          serial.onError(e);
-        } finally {
-          serial.unsubscribe();
-        }
-      }
-
-      @Override
-      public void onCompleted() {
-        try {
-          serial.onCompleted();
-        } finally {
-          serial.unsubscribe();
-        }
-      }
-    };
-
-    final Subscriber<E> so = new Subscriber<E>() {
-      @Override
-      public void onStart() {
-        request(Long.MAX_VALUE);
-      }
-
-      @Override
-      public void onCompleted() {
-        serial.unsubscribe();
-        child.unsubscribe();
-      }
-
-      @Override
-      public void onError(Throwable e) {
-        serial.unsubscribe();
-        child.unsubscribe();
-      }
-
-      @Override
-      public void onNext(E t) {
-        serial.unsubscribe();
-        child.unsubscribe();
-      }
-    };
-
-    serial.add(main);
-    serial.add(so);
-
-    child.add(serial);
-
-    other.unsafeSubscribe(so);
-
-    return main;
+  @Override public Observer<? super T> apply(Observer<? super T> child) throws Exception {
+    return null;
   }
-
 }

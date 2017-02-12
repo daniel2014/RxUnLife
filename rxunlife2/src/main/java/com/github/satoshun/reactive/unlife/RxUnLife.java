@@ -19,7 +19,9 @@ import com.github.satoshun.reactive.unlife.internal.Preconditions;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 
-import rx.Observable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Predicate;
 
 public class RxUnLife {
 
@@ -32,12 +34,7 @@ public class RxUnLife {
    * <p>
    * When the lifecycle event occurs, the source will cease to emit any notifications.
    * <p>
-   * Use with {@link Observable#compose(Observable.Transformer)}:
    * {@code source.compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.STOP)).subscribe()}
-   *
-   * @param lifecycle the lifecycle sequence
-   * @param event     the event which should conclude notifications from the source
-   * @return a reusable {@link Observable.Transformer} that unsubscribes the source at the specified event
    */
   @Nonnull
   @CheckReturnValue
@@ -46,14 +43,13 @@ public class RxUnLife {
       @Nonnull final R event) {
     Preconditions.checkNotNull(lifecycle, "lifecycle == null");
     Preconditions.checkNotNull(event, "event == null");
-
-    return new UnlifeObservableTransformer<>(lifecycle, event);
+    return bind(takeUntilEvent(lifecycle, event));
   }
 
   /**
    * Binds the given source to a lifecycle.
    * <p>
-   * Use with {@link Observable#compose(Observable.Transformer)}:
+   * Use with {@link Observable#compose(ObservableTransformer)}:
    * {@code source.compose(RxUnLife.bind(lifecycle)).subscribe()}
    * <p>
    * This helper automatically determines (based on the lifecycle sequence itself) when the source
@@ -61,13 +57,21 @@ public class RxUnLife {
    * emitted by the given lifecycle indicates that the lifecycle is over.
    *
    * @param lifecycle the lifecycle sequence
-   * @return a reusable {@link Observable.Transformer} that unsubscribes the source whenever the lifecycle emits
+   * @return a reusable {@link ObservableTransformer} that unsubscribes the source whenever the lifecycle emits
    */
   @Nonnull
   @CheckReturnValue
   public static <T, R> UnLifeTransformer<T> bind(@Nonnull final Observable<R> lifecycle) {
     Preconditions.checkNotNull(lifecycle, "lifecycle == null");
+    return new UnLifeTransformer<>(lifecycle);
+  }
 
-    return new UntilUnlifeObservableTransformer<>(lifecycle);
+  private static <R> Observable<R> takeUntilEvent(final Observable<R> lifecycle, final R event) {
+    return lifecycle.filter(new Predicate<R>() {
+      @Override
+      public boolean test(R lifecycleEvent) throws Exception {
+        return lifecycleEvent.equals(event);
+      }
+    });
   }
 }

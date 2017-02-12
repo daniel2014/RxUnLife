@@ -1,13 +1,17 @@
 package com.github.satoshun.reactive.unlife;
 
-import rx.exceptions.Exceptions;
-import rx.functions.Func1;
+import java.util.concurrent.CancellationException;
+
+import io.reactivex.Completable;
+import io.reactivex.exceptions.Exceptions;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
 final class Functions {
 
-  static final Func1<Throwable, Boolean> RESUME_FUNCTION = new Func1<Throwable, Boolean>() {
+  static final Function<Throwable, Boolean> RESUME_FUNCTION = new Function<Throwable, Boolean>() {
     @Override
-    public Boolean call(Throwable throwable) {
+    public Boolean apply(Throwable throwable) throws Exception {
       if (throwable instanceof OutsideLifecycleException) {
         return true;
       }
@@ -18,10 +22,17 @@ final class Functions {
     }
   };
 
-  static final Func1<Boolean, Boolean> SHOULD_COMPLETE = new Func1<Boolean, Boolean>() {
+  static final Predicate<Boolean> SHOULD_COMPLETE = new Predicate<Boolean>() {
     @Override
-    public Boolean call(Boolean shouldComplete) {
+    public boolean test(Boolean shouldComplete) throws Exception {
       return shouldComplete;
+    }
+  };
+
+  static final Function<Object, Completable> CANCEL_COMPLETABLE = new Function<Object, Completable>() {
+    @Override
+    public Completable apply(Object ignore) throws Exception {
+      return Completable.error(new CancellationException());
     }
   };
 

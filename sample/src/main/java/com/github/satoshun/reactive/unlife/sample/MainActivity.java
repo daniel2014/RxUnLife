@@ -6,23 +6,28 @@ import android.util.Log;
 
 import com.github.satoshun.reactive.unlife.RxUnLife;
 import com.github.satoshun.reactive.unlife.android.ActivityEvent;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.BehaviorSubject;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import rx.Observable;
-import rx.Single;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subjects.BehaviorSubject;
 
 public class MainActivity extends AppCompatActivity {
 
   private final BehaviorSubject<ActivityEvent> lifecycle = BehaviorSubject.create();
-
-  private GithubClient github;
+  private final GithubClient github = new Retrofit.Builder()
+      .client(new OkHttpClient.Builder().build())
+      .baseUrl("https://api.github.com/")
+      .addConverterFactory(GsonConverterFactory.create())
+      .addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build()
+      .create(GithubClient.class);
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +35,6 @@ public class MainActivity extends AppCompatActivity {
     lifecycle.onNext(ActivityEvent.CREATE);
 
     setContentView(R.layout.main_act);
-
-    github = new Retrofit.Builder()
-        .client(new OkHttpClient.Builder().build())
-        .baseUrl("https://api.github.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build()
-        .create(GithubClient.class);
 
     sampleObservable();
     sampleSingle();
@@ -47,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     github.observable()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnUnsubscribe(() -> Log.d("observable:unlife", "doOnUnsubscribe"))
+        .doOnDispose(() -> Log.d("observable:unlife", "doOnDispose"))
         .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.CREATE))
         .subscribe(
             v -> Log.d("observable:unlife", String.valueOf(v)),
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     github.observable()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnUnsubscribe(() -> Log.d("observable success", "doOnUnsubscribe"))
+        .doOnDispose(() -> Log.d("observable success", "doOnDispose"))
         .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.PAUSE))
         .subscribe(
             v -> Log.d("observable success", String.valueOf(v)),
@@ -69,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     github.observableError()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnUnsubscribe(() -> Log.d("observable error", "doOnUnsubscribe"))
+        .doOnDispose(() -> Log.d("observable error", "doOnDispose"))
         .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.PAUSE))
         .subscribe(
             v -> Log.d("observable error", String.valueOf(v)),
@@ -81,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
     github.single()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnUnsubscribe(() -> Log.d("single:unlife", "doOnUnsubscribe"))
-        .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.CREATE).forSingle())
+        .doOnDispose(() -> Log.d("single:unlife", "doOnDispose"))
+        .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.CREATE))
         .subscribe(
             v -> Log.d("single:unlife", String.valueOf(v)),
             e -> Log.d("single:unlife", String.valueOf(e)));
@@ -90,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
     github.single()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnUnsubscribe(() -> Log.d("single success", "doOnUnsubscribe"))
-        .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.STOP).forSingle())
+        .doOnDispose(() -> Log.d("single success", "doOnDispose"))
+        .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.STOP))
         .subscribe(
             v -> Log.d("single success", String.valueOf(v)),
             e -> Log.d("single success", String.valueOf(e)));
@@ -99,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
     github.singleError()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnUnsubscribe(() -> Log.d("single error", "doOnUnsubscribe"))
-        .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.STOP).forSingle())
+        .doOnDispose(() -> Log.d("single error", "doOnDispose"))
+        .compose(RxUnLife.bindUntilEvent(lifecycle, ActivityEvent.STOP))
         .subscribe(
             v -> Log.d("single error", String.valueOf(v)),
             e -> Log.d("single error", String.valueOf(e)));
@@ -114,5 +112,9 @@ public class MainActivity extends AppCompatActivity {
     @GET("meta") Single<Object> single();
 
     @GET("meta/hoge") Single<Object> singleError();
+
+    @GET("meta") Completable completable();
+
+    @GET("meta/hoge") Completable completableError();
   }
 }
